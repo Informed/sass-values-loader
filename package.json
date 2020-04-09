@@ -13,7 +13,7 @@
     "scss-parser": "^1.0.0"
   },
   "peerDependencies": {
-    "node-sass": "^4.5.3"
+    "sass": "1.26.3"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
