@@ -7,11 +7,14 @@ const scssParser = require('scss-parser');
 const createQueryWrapper = require('query-ast');
 const isArray = require('lodash/isArray');
 
+
 // This queue makes sure node-sass leaves one thread available for executing
 // fs tasks when running the custom importer code.
 // This can be removed as soon as node-sass implements a fix for this.
 const threadPoolSize = process.env.UV_THREADPOOL_SIZE || 4;
-const asyncSassJobQueue = async.queue(sass.render.bind(sass), threadPoolSize - 1);
+const asyncSassJobQueue = async.queue((arg, callback) => {
+  return sass.render(arg, callback);
+}, threadPoolSize - 1);
 
 function cleanAST(ast) {
   if (isArray(ast)) {
@@ -165,7 +168,7 @@ function SassVariablesExtract(resourcePath, resolve, sass) {
     const transformedSass = transformSASSFile(sass);
     const importer = createImporter(resourcePath, resolve, dependencies);
     const exportVar = (name, value) => exportSASSValue(variables, name, value);
-    const functions = { export_var: exportVar };
+    const functions = { 'export_var($key, $value, $defaultValues...)': exportVar };
     return parseSASS(transformedSass, importer, functions).then(() => {
       return { variables: variables, dependencies: dependencies };
     });
