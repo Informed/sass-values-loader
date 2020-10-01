@@ -10,7 +10,7 @@
     "lodash.foreach": "^4.5.0",
     "lodash.isarray": "^4.0.0",
     "query-ast": "^1.0.1",
-    "scss-parser": "^1.0.0"
+    "scss-parser": "^1.0.4"
   },
   "peerDependencies": {
     "sass": "1.26.3"
